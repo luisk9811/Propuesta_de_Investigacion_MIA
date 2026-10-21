@@ -1,0 +1,113 @@
+\titleformat
+{\chapter} % command
+[display] % shape
+{\bfseries\Large\itshape} % format
+{Capítulo \ \thechapter} % label
+{0.5ex} % sep
+{
+    \rule{\textwidth}{1pt}
+    \vspace{1ex}
+    \centering
+} % before-code
+[
+\vspace{-0.5ex}%
+\rule{\textwidth}{0.3pt}
+] % after-code
+
+\chapter{Planteamiento del Problema}
+
+\section{Introducción al Problema}
+
+El uso acelerado de dispositivos electrónicos ha incrementado drásticamente la generación de residuos de aparatos eléctricos y electrónicos (RAEE). Estos residuos contienen sustancias tóxicas que afectan el medio ambiente y la salud humana, agravados por la obsolescencia programada y bajos niveles de reciclaje a nivel global \cite{jesiddiazbastosImpactoResiduosAparatos2025}. En América Latina, la inadecuada gestión de esta producción masiva genera una acumulación crítica que exige la implementación de mejores prácticas de manejo \cite{zambranoyepezBuenasPracticasManejo2022}.
+
+\section{Análisis del Problema}
+
+Los RAEE contienen materiales valiosos (oro, cobre, aluminio), representando una fuente potencial de recuperación económica. Sin embargo, su compleja caracterización y la ineficiencia operativa limitan su aprovechamiento \cite{venegasmarcelModeloProcedimentalPara2020}. En países en desarrollo, la falta de infraestructura y de procesos avanzados provoca la exportación de estos residuos, transfiriendo su valor económico y reduciendo la viabilidad de soluciones locales \cite{ottoniSustainabilityAssessmentBest2023}. Esta gestión ineficiente dificulta la implementación de modelos de economía circular, incrementando costos logísticos y desperdiciando materiales recuperables \cite{souzaCHALLENGESTRANSITIONCIRCULAR2025}.\\
+
+En el contexto colombiano, la gestión de los RAEE ha sido fortalecida mediante lineamientos técnicos y marcos normativos orientados a su recolección, tratamiento y disposición final. Sin embargo, a pesar de estos avances, persisten limitaciones relacionadas con la baja adopción de tecnologías en entornos operativos, la dependencia de procesos manuales en la clasificación y la falta de articulación entre las etapas de identificación y valorización de los residuos, lo que limita el aprovechamiento eficiente de los materiales recuperables y evidencia brechas en la implementación de soluciones tecnológicas integradas \cite{guiaRAEEColombia2023}.\\
+
+Con el fin de sintetizar las causas y efectos asociados a la problemática identificada, en la Figura \ref{fig:arbol_problema_final} se presenta el árbol del problema.\\
+
+\begin{figure}[H]
+\centering
+    \resizebox{\textwidth}{!}{
+        \begin{tikzpicture}[
+            node distance = 0.5cm and 0.5cm,
+            base/.style = {rectangle, draw, line width=1pt, text width=4cm, minimum height=1.6cm, align=center, font=\sffamily\scriptsize},
+            efecto/.style = {base, draw=green!60!black, fill=green!5},
+            problema/.style = {base, draw=orange!70!black, fill=orange!10, text width=5.5cm, minimum height=2.8cm},
+            causa/.style = {base, draw=brown!70!black, fill=brown!15},
+            labelStyle/.style = {font=\sffamily\tiny\bfseries, rotate=90}
+        ]
+
+        % PROBLEMA
+        \node[problema] (P) {Dificultad para clasificar y valorar económicamente los RAEE en tiempo real debido a la dependencia de procesos manuales y la limitada integración de tecnologías basadas en inteligencia artificial.};
+
+        % EFECTOS
+        \node[efecto, above=1.0cm of P] (E2b) {Riesgos para la salud en la manipulación de residuos peligrosos.};
+        \node[efecto, left=of E2b] (E1b) {Impacto ambiental por disposición inadecuada de RAEE.};
+        \node[efecto, right=of E2b] (E3b) {Baja competitividad en el mercado de materiales reciclables.};
+
+        \node[efecto, above=of E1b] (E1a) {Pérdida de valor económico en materiales reciclables.};
+        \node[efecto, above=of E2b] (E2a) {Incremento de costos operativos en los procesos de clasificación.};
+        \node[efecto, above=of E3b] (E3a) {Baja eficiencia en el aprovechamiento de los residuos.};
+
+        % CAUSAS
+        \node[causa, below=1.0cm of P] (C2a) {Baja adopción de tecnologías de inteligencia artificial en entornos operativos.};
+        \node[causa, left=of C2a] (C1a) {Dependencia de inspección visual manual en el proceso de clasificación.};
+        \node[causa, right=of C2a] (C3a) {Falta de integración entre clasificación visual y valoración económica.};
+
+        \node[causa, below=of C1a] (C1b) {Infraestructura tecnológica limitada y de alto costo para el procesamiento de RAEE.};
+        \node[causa, below=of C2a] (C2b) {Alta complejidad en la caracterización de materiales electrónicos.};
+        \node[causa, below=of C3a] (C3b) {Desconexión entre clasificación en planta y comercialización de materiales.};
+
+        % CONEXIONES
+        \begin{scope}[gray, thin]
+
+            \draw (P.north) -- ++(0,0.5) -| (E1b.south);
+            \draw (P.north) -- (E2b.south);
+            \draw (P.north) -- ++(0,0.5) -| (E3b.south);
+
+            \draw (P.south) -- ++(0,-0.5) -| (C1a.north);
+            \draw (P.south) -- (C2a.north);
+            \draw (P.south) -- ++(0,-0.5) -| (C3a.north);
+
+            \draw (E1b.north) -- (E1a.south); \draw (E2b.north) -- (E2a.south); \draw (E3b.north) -- (E3a.south);
+            \draw (C1a.south) -- (C1b.north); \draw (C2a.south) -- (C2b.north); \draw (C3a.south) -- (C3b.north);
+        \end{scope}
+
+        % LLAVES
+        \draw [decorate, decoration={brace, amplitude=10pt, mirror}, green!40!black, line width=1pt]
+            ([xshift=-10pt]E1a.north west) -- ([xshift=-10pt]E1b.south west)
+            node [midway, left=15pt, labelStyle, anchor=center] {EFECTOS};
+
+        \draw [decorate, decoration={brace, amplitude=10pt, mirror}, orange!60!brown, line width=1pt]
+            ([xshift=-10pt]P.north west) -- ([xshift=-10pt]P.south west)
+            node [midway, left=15pt, labelStyle, anchor=center] {PROBLEMA};
+
+        \draw [decorate, decoration={brace, amplitude=10pt, mirror}, brown!60!black, line width=1pt]
+            ([xshift=-10pt]C1a.north west) -- ([xshift=-10pt]C1b.south west)
+            node [midway, left=15pt, labelStyle, anchor=center] {CAUSAS};
+
+        \end{tikzpicture}
+    }
+\caption{Árbol del problema para la gestión de RAEE}
+\label{fig:arbol_problema_final}
+\end{figure}
+
+\vspace{1em}
+
+Ante estas limitaciones, los enfoques basados en inteligencia artificial evidencian un alto potencial para automatizar la clasificación de residuos. Las técnicas de visión computacional y aprendizaje profundo, específicamente las redes neuronales convolucionales (CNN) y arquitecturas como YOLO, permiten identificar defectos y clasificar dispositivos con alta precisión en tiempo real \cite{menagaIntelligentDeviceCondition2026}. Mejoras como YOLO-MDD abordan la variabilidad de escalas y condiciones de captura, superando a modelos tradicionales en métricas de robustez \cite{guYOLOMDDAddressingInconsistent2025}.\\
+
+Adicionalmente, se ha explorado la integración de visión computacional con esquemas de valoración económica para estimar el valor potencial del residuo según su estado \cite{joshiSustainableEWasteManagement2024}, así como el uso de enfoques multimodales para reducir la ambigüedad en clasificaciones complejas \cite{obayemiAutomatedWEEESortation2025a}. Por su parte, arquitecturas recientes como los Vision Transformers alcanzan precisiones superiores al 99\% \cite{chauhanViT4WasteVisionTransformerBased2025}. Sin embargo, su alto costo computacional, consumo de memoria y elevada latencia limitan drásticamente su aplicabilidad en escenarios operativos, haciendo imperativo el uso de redes eficientes orientadas al procesamiento continuo.\\
+
+En contraste, la literatura reciente evidencia que los modelos ligeros pueden ejecutarse en plataformas de cómputo de bajo costo. \cite{castrobelloConvolutionalNeuralNetwork2025} compararon cuatro detectores ligeros (YOLOv4-tiny, YOLOv7-tiny, YOLOv8-nano y YOLOv9-tiny) sobre una Raspberry Pi 4 y reportaron un mAP50 de 0{,}976 para YOLOv8-nano, con tiempos de inferencia cercanos a 1{,}5\,s por imagen; \cite{daoDesignImplementationRealTime2026} desplegaron YOLOv8n en la CPU de una Raspberry Pi 5 con una latencia de 150\,ms ($\sim$6{,}7\,FPS), y \cite{mutarAIBasedModelHome2026} alcanzaron un \textit{accuracy} de 95{,}2\% con 45\,ms por imagen y un consumo promedio de 5{,}2\,W al incorporar el acelerador neuronal del Raspberry Pi 5 AI Kit. Estos resultados indican que la barrera para la adopción en centros de acopio no es la disponibilidad de algoritmos, sino su adaptación a infraestructuras de cómputo asequibles, condición todavía poco explorada para la clasificación de componentes de RAEE.\\
+
+A pesar de estos avances algorítmicos, su implementación real presenta barreras críticas. La recuperación de materiales sigue siendo parcial y fuertemente dependiente de procesos manuales, lo que genera grandes pérdidas de valor económico \cite{oliveiranetoCriticalBarriersMaterial2025}. La complejidad del manejo de RAEE representa un problema de decisiones multicriterio, gravemente afectado por ineficiencias logísticas y altos costos de operación \cite{seikhIdentifyingSustainableStrategies2024, oliveiranetoArtificialIntelligencebasedOptimization2025}.\\
+
+Las soluciones actuales suelen enfocarse en silos aislados, como la optimización de rutas o la recuperación final, sin integrar de manera efectiva la clasificación visual con modelos de valoración financiera \cite{simaeiAIbasedDecisionSupport2024}. Esta falta de información estructurada y la alta incertidumbre en la condición del residuo dificultan la toma de decisiones en etapas clave como la reutilización, reparación o reciclaje \cite{anandhMultiobjectiveMetaheuristicsOptimize2024}.\\
+
+Por lo tanto, se propone el desarrollo de un sistema de apoyo a la toma de decisiones basado en técnicas de visión computacional y un esquema de valoración económica, ejecutable en hardware de cómputo de bajo costo. Este sistema permitirá identificar y clasificar residuos electrónicos a partir de imágenes, estimando simultáneamente su potencial de rentabilidad para reducir tiempos operativos y optimizar el proceso de reciclaje, sin requerir infraestructura computacional especializada en los centros de acopio.
+
+\section{Formulación del Problema}
+¿En qué medida la implementación de un sistema de apoyo a la toma de decisiones, que integre modelos de visión computacional con un esquema de valoración económica y que se ejecute en hardware de cómputo de bajo costo, permite mejorar la precisión, reducir los tiempos de clasificación y optimizar la viabilidad del proceso en la gestión de RAEE frente a métodos tradicionales?

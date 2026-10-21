@@ -1,0 +1,81 @@
+\chapter{Alcance y limitaciones}
+
+\section{Alcance}
+
+El presente proyecto de investigación se enmarca en el desarrollo de un sistema de apoyo a la toma de decisiones (SATD) de carácter prototípico, que integra un módulo de visión computacional basado en técnicas de transfer learning y un esquema de valoración económica, ejecutable en hardware de cómputo de bajo costo, aplicado a la clasificación de Residuos de Aparatos Eléctricos y Electrónicos (RAEE). El alcance del trabajo se define a continuación a partir de sus dimensiones temática, geográfica, metodológica y tecnológica.
+
+\subsection{Alcance temático}
+La investigación se enfoca en el desarrollo de un modelo de inteligencia artificial basado en visión computacional para la clasificación de residuos de aparatos eléctricos y electrónicos (RAEE) según su tipo de objeto. Asimismo, aborda la caracterización de los residuos clasificados mediante atributos como nivel de aprovechamiento, reciclabilidad y potencial de valorización, en el marco de la economía circular. Este enfoque se centra en la etapa de identificación y clasificación como fase previa a los procesos de aprovechamiento, sin abordar directamente la recuperación física de materiales.
+
+\subsection{Alcance geográfico y normativo}
+El desarrollo de la propuesta se contextualiza en Colombia, reconociendo el marco normativo vigente en materia de residuos de aparatos eléctricos y electrónicos (RAEE), en particular la Ley 1672 de 2013 y el Decreto 284 de 2018, así como los lineamientos generales definidos por el Ministerio de Ambiente y Desarrollo Sostenible. Estos instrumentos establecen directrices para la gestión integral de los RAEE, incluyendo responsabilidades de los actores involucrados y orientaciones hacia su aprovechamiento sostenible. No obstante, la presente investigación no se enfoca en el análisis ni en la implementación de dichos instrumentos normativos, sino en el desarrollo de una solución tecnológica orientada a la clasificación automatizada de residuos electrónicos, como aporte complementario a los procesos de gestión existentes.
+
+\subsection{Alcance metodológico}
+La investigación adopta un enfoque aplicado con validación experimental en un entorno controlado, que incluye la construcción de un dataset de imágenes de residuos electrónicos, el desarrollo y entrenamiento de modelos de visión computacional, y la evaluación de su desempeño mediante métricas estándar de clasificación. A continuación, se detalla:
+
+\begin{itemize}
+    \item Construcción y/o curaduría de un conjunto de imágenes de RAEE, a partir de repositorios públicos y/o imágenes propias capturadas bajo condiciones controladas de iluminación, fondo y posicionamiento, etiquetadas a nivel de tipo de objeto o componente visible (baterías, tarjetas electrónicas, pantallas, cables, carcasas, entre otras categorías operativas).
+    \item Implementación de un modelo de clasificación y/o detección, basado en arquitecturas preentrenadas reportadas en la literatura, como redes neuronales convolucionales profundas y modelos de detección de objetos tipo YOLO, así como arquitecturas basadas en transformers visuales, ajustadas mediante técnicas de transfer learning para reconocer categorías de componentes de RAEE.
+    \item Optimización y despliegue del modelo seleccionado en hardware de bajo costo, mediante cuantización (INT8) y conversión a formatos de inferencia ligeros (TFLite, ONNX, NCNN o HEF), y su ejecución en una Raspberry Pi 5 en dos configuraciones: sólo CPU y con acelerador de inferencia neuronal, siguiendo las prácticas de evaluación reportadas por \cite{zagitovComparativeAnalysisNeural2024} y \cite{alqahtaniBenchmarkingDeepLearning2024}.
+    \item Definición de un esquema de estimación del potencial de valorización, estructurado como un motor de reglas, que asigna niveles de aprovechamiento a cada componente identificado a partir de su composición típica y del potencial económico asociado a los materiales recuperables, utilizando valores de referencia tomados de literatura especializada y reportes de mercado. El esquema reconoce la variabilidad dentro de una misma categoría de componente, por lo que los resultados se presentan como rangos orientativos.
+    \item Integración de los componentes desarrollados en un prototipo funcional, que permita generar sugerencias de manejo del residuo, tales como reciclaje, reutilización o disposición.
+    \item Evaluación del sistema, mediante métricas estandarizadas de desempeño.
+\end{itemize}
+
+\subsection{Alcance tecnológico}
+El sistema se desarrolla como un prototipo de software cuyo módulo de inferencia se ejecuta en una plataforma de cómputo de bajo costo, tomando como referencia una Raspberry Pi 5 en dos configuraciones: (i) sólo CPU y (ii) con un acelerador de inferencia neuronal tipo Hailo-8L (AI HAT+), sobre imágenes estáticas adquiridas con una cámara estándar. El entrenamiento y el ajuste fino de los modelos se realizarán en equipos con GPU o en servicios en la nube; posteriormente, los modelos se optimizarán y convertirán para su despliegue en el dispositivo, de forma que la inferencia no dependa de conectividad a la nube. Esta elección se apoya en los resultados de \cite{castrobelloConvolutionalNeuralNetwork2025}, \cite{daoDesignImplementationRealTime2026} y \cite{mutarAIBasedModelHome2026}, que demuestran la viabilidad de clasificar residuos en este tipo de plataformas.
+
+No se contempla el desarrollo de hardware industrial especializado (cintas transportadoras, celdas robotizadas, sensores multiespectrales, fluorescencia de rayos X u otros instrumentos de análisis elemental), aunque la arquitectura del sistema se diseña de manera que sea extensible a futuras integraciones. El prototipo será desplegado localmente en el dispositivo y su interfaz estará orientada a usuarios técnicos vinculados a procesos de triaje.
+
+\subsection{Alcance de la evaluación}
+La evaluación del modelo se realizará a nivel técnico mediante métricas de desempeño como precisión, recall y F1-score. Adicionalmente, en el dispositivo de bajo costo se medirán la latencia de inferencia por imagen, la tasa de cuadros por segundo (FPS), el uso de CPU y memoria y el consumo energético, así como la variación de la precisión del modelo tras su cuantización. De manera complementaria, se incluirá una evaluación del potencial de aprovechamiento de los residuos clasificados, basada en categorizaciones cualitativas y estimaciones de valorización económica simplificadas. Este análisis no contempla el desarrollo de modelos financieros detallados ni evaluaciones económicas a escala industrial.
+
+\section{Limitaciones}
+A continuación se presentan las principales limitaciones asociadas al desarrollo del proyecto, clasificadas según su naturaleza.
+
+\subsection{Limitaciones técnicas y de datos}
+\begin{itemize}
+    \item \textbf{Nivel de granularidad de la clasificación.} El sistema identifica los RAEE a nivel de componente (batería, tarjeta electrónica, pantalla, cables, carcasa, entre otros) y no a nivel de mineral o metal específico. Por lo tanto, no es objetivo del modelo de visión computacional diferenciar, por ejemplo, la densidad de oro presente en una tarjeta frente a otra; dicha diferenciación requiere técnicas de análisis elemental (XRF, ICP-MS) que exceden el alcance del proyecto.
+    \item \textbf{Variabilidad dentro de una misma categoría.} Se reconoce que dos componentes clasificados en la misma categoría (por ejemplo, dos baterías o dos tarjetas electrónicas) pueden tener valores económicos distintos debido a diferencias de marca, tecnología, tamaño o estado de conservación. El sistema reporta estimaciones agregadas basadas en valores de referencia por categoría y no tasaciones individuales.
+    \item \textbf{Tamaño y diversidad del conjunto de datos.} La cantidad de imágenes disponibles para entrenamiento y validación estará condicionada por la escasez de datasets públicos especializados en componentes de RAEE, lo que puede introducir sesgos asociados a la representatividad de marcas, modelos, estados de deterioro y condiciones de iluminación.
+    \item \textbf{Condiciones de captura de imagen.} Las imágenes serán adquiridas en un entorno controlado (iluminación homogénea, fondo uniforme, encuadre estandarizado). Por lo tanto, el desempeño reportado no garantiza un comportamiento equivalente bajo condiciones reales de planta (oclusiones, apilamientos, suciedad, variabilidad lumínica).
+    \item \textbf{Desempeño del modelo.} Los resultados dependerán de la arquitectura seleccionada, de los hiperparámetros ajustados y de la calidad del dataset. Modelos más recientes o de mayor capacidad podrían obtener mejores resultados.
+    \item \textbf{Recursos computacionales.} El entrenamiento se realizará con los recursos disponibles para el proyecto (GPU de gama media-alta o servicios en la nube con cuotas limitadas), lo que puede restringir la exploración de arquitecturas de alto costo computacional. La inferencia, en cambio, se restringe a la plataforma de bajo costo seleccionada, cuya capacidad de memoria y cómputo limita el tamaño de las arquitecturas desplegables; los modelos de mayor capacidad (por ejemplo, ViT-Base o detectores de dos etapas) sólo se evaluarán como referencia en equipos convencionales.
+    \item \textbf{Restricciones del hardware de bajo costo.} La cuantización a INT8 puede reducir la precisión respecto al modelo original, y los aceleradores neuronales de bajo costo no soportan todas las operaciones de los modelos más recientes (por ejemplo, ciertos bloques de atención), lo que puede restringir la elección de arquitectura. Además, los resultados de latencia y consumo dependen del dispositivo, del formato de inferencia y de la versión del software empleado, por lo que no son directamente extrapolables a otras plataformas.
+\end{itemize}
+
+\subsection{Limitaciones de la valoración económica}
+\begin{itemize}
+    \item \textbf{Valoración por categoría, no por unidad.} El esquema asigna rangos de valor a cada categoría de componente con base en su composición típica y en el contenido esperado de metales y materiales recuperables. No se realiza una tasación unitaria para cada residuo particular, por lo que dos componentes de la misma categoría pueden recibir una estimación similar aun cuando su valor real difiera.
+    \item \textbf{Naturaleza indicativa de la valoración.} Los valores reportados son orientadores para la toma de decisiones; no constituyen una tasación comercial ni sustituyen las cotizaciones de gestores autorizados ni los análisis elementales realizados por laboratorios.
+    \item \textbf{Precios no dinámicos.} El sistema no integra mecanismos de actualización en tiempo real de los precios internacionales de metales y componentes; la volatilidad de estos mercados puede afectar la vigencia de las estimaciones.
+    \item \textbf{Ausencia de análisis fisicoquímico.} La valoración se basa en la identificación visual del componente y en la composición típica de la literatura; no se realizan análisis físico-químicos, espectro métricos ni mediciones de pureza o concentración.
+    \item \textbf{Factores logísticos y tributarios.} Aspectos como costos de transporte, logística inversa, doble tributación y cargas fiscales al reciclaje, no se incorporan al esquema de valoración.
+\end{itemize}
+
+\subsection{Limitaciones de implementación y despliegue}
+\begin{itemize}
+    \item \textbf{Nivel de madurez tecnológica.} El resultado es un prototipo funcional (proof of concept) con un TRL estimado entre 3 y 5. No se aborda industrialización, certificación ni homologación para uso comercial o regulatorio.
+    \item \textbf{Integración con hardware y sistemas existentes.} No se contempla la integración con líneas automatizadas, robots colaborativos, sistemas ERP de gestores ni plataformas gubernamentales de trazabilidad. Su uso supone operación manual por un usuario técnico.
+    \item \textbf{Seguridad y protección de datos.} El prototipo no incluye auditorías formales de ciberseguridad, gestión de identidades ni cumplimiento exhaustivo sobre tratamiento de datos personales.
+    \item \textbf{Escalabilidad.} La arquitectura contempla modularidad y extensibilidad, pero su comportamiento bajo cargas concurrentes o despliegues distribuidos no forma parte del alcance.
+\end{itemize}
+
+\subsection{Limitaciones metodológicas y de validación}
+\begin{itemize}
+    \item \textbf{Validación en entorno controlado.} La comparación con el proceso manual se realizará en laboratorio con un número acotado de muestras y de evaluadores humanos, lo que limita la generalización estadística hacia entornos industriales.
+    \item \textbf{Ausencia de estudios de usabilidad extensivos.} No se contempla un estudio formal de usabilidad o experiencia de usuario con una muestra significativa de operarios reales.
+    \item \textbf{No generalización a otros flujos de residuos.} El sistema se limita a RAEE; no se válida para otras corrientes (orgánicos, plásticos de post-consumo, construcción, peligrosos hospitalarios).
+\end{itemize}
+
+\subsection{Limitaciones temporales y de recursos}
+\begin{itemize}
+    \item \textbf{Tiempo de ejecución.} Los plazos propios de una tesis de maestría restringen la extensión del trabajo experimental y el número de iteraciones de mejora del modelo y del esquema de valoración.
+    \item \textbf{Disponibilidad de aliados estratégicos.} El acceso a plantas de tratamiento, gestores autorizados, asociaciones de recicladores y programas posconsumo depende de su disponibilidad, lo cual puede afectar la diversidad de muestras utilizadas.
+\end{itemize}
+
+\subsection{Consideraciones éticas y normativas}
+\begin{itemize}
+    \item \textbf{Carácter de apoyo a la decisión.} El sistema es una herramienta de apoyo y no reemplaza el juicio experto ni los procedimientos certificados por las autoridades ambientales competentes. Las recomendaciones deben ser revisadas por personal calificado antes de cualquier disposición final.
+    \item \textbf{Residuos peligrosos.} El manejo físico de RAEE con sustancias peligrosas (mercurio, plomo, baterías de litio, entre otros) se rige por la normativa ambiental vigente; el prototipo no sustituye dichos procedimientos.
+\end{itemize}
